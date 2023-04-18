@@ -1,0 +1,9 @@
+sempre(vero).
+
+scelta_operazione(Operazione) :- sempre(vero).
+scelta_operazioneI(Operazione) :>
+    random(1, 3, Operazione), 
+    (Operazione == 1 -> OperazioneScelta = prelievo ; 
+     Operazione == 2 -> OperazioneScelta = pagamento ; 
+     Operazione == 3 -> OperazioneScelta = deposito),
+    write('Salve dovrei effettuare una operazione di: '),write(OperazioneScelta),nl.

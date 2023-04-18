@@ -1,0 +1,28 @@
+:- dynamic saldo/1.
+
+/*
+Tipolgie di operazione: 
+1 -> Prelievo
+2 -> Pagamento
+3 -> Deposito
+*/
+
+/* Fatti */
+saldo(500).
+sempre(vero).
+nome_agente(cliente1).
+
+scelta_operazione(Operazione) :- sempre(vero).
+scelta_operazioneI(Operazione) :>
+    random(1, 3, Operazione), 
+    (Operazione == 1 -> OperazioneScelta = prelievo ; 
+     Operazione == 2 -> OperazioneScelta = pagamento ; 
+     Operazione == 3 -> OperazioneScelta = deposito),
+    write('Salve dovrei effettuare una operazione di: '),write(OperazioneScelta),nl.
+	
+/*	
+initE :> write('Sono cliente1, devo effettuare una operazione di '),messageA(sport1,send_message(prelievo(Me),Me)),messageA(sport2,send_message(prelievo(Me),Me)).
+
+quanto_prelievoE(C) :> write('Prelevo 200 euro'),messageA(C,send_message(esegui_prelievo(200),Me)).  
+C contiene lo sportellista
+*/
