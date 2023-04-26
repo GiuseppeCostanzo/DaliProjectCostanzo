@@ -1,3 +1,4 @@
+/*
 sempre(vero).
 
 scelta_operazione(Operazione) :- sempre(vero).
@@ -7,3 +8,4 @@ scelta_operazioneI(Operazione) :>
      Operazione == 2 -> OperazioneScelta = pagamento ; 
      Operazione == 3 -> OperazioneScelta = deposito),
     write('Salve dovrei effettuare una operazione di: '),write(OperazioneScelta),nl.
+*/

@@ -1,0 +1,7 @@
+send_message(send_message(quantoDeposito,_958757))
+send_message(send_message(quantoDeposito,_958507))
+send_message(send_message(quantoPrelievo,_958507))
+send_message(send_message(quantoPrelievo,_958507))
+send_message(send_message(quantoDeposito,_919349))
+send_message(send_message(quantoPrelievo,_945383))
+send_message(send_message(quantoPrelievo,_958507))
