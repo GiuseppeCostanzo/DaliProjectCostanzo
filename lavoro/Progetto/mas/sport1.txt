@@ -8,21 +8,21 @@ esegui_prelievoE(A) :> write('Operazione effettuata, hai prelevato '), write(A).
 
 
 /* Simulazione database della banca */
-saldo(client1,500).
+saldo(client1,50).
 saldo(client2,400).
 
 
-
+/* Risposte per il cliente */
 prelievoE(A) :> write('Salve quanto deve prelevare?'),messageA(A,send_message(quantoPrelievo,Me)),nl.
 pagamentoE(B) :> write('Salve quanto deve pagare?'),messageA(B,send_message(quantoPagamento,Me)),nl.
 depositoE(C) :> write('Salve quanto deve depositare?'),messageA(C,send_message(quantoDeposito,Me)),nl.
 
-/* Routine per verificare il prelievo */
-
+/* Routine per verificare il prelievo - C è il cliente, Q è quanto deve prelevare*/
+prelevareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');write('Il prelievo e andato a buon fine')),nl.
 
 /* Routine per verificare il pagamento */
 
 
 
 /* Routine per il deposito */
-/*depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro. Adesso il totale è '),write('insTot'),nl.*/
+depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro'),nl.

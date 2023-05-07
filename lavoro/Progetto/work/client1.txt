@@ -20,15 +20,10 @@ scelta_operazione(Operazione) :- sempre(vero).
 scelta_operazioneI(Operazione) :>
     random(1, 4, Operazione), 
     (Operazione == 1 -> OperazioneScelta = prelievo(Me) ; 
-     Operazione == 2 -> OperazioneScelta = pagamento(Me) ; 
-     Operazione == 3 -> OperazioneScelta = deposito(Me)),
+     Operazione == 2 -> OperazioneScelta = prelievo(Me) ; 
+     Operazione == 3 -> OperazioneScelta = prelievo(Me)),
     write('Salve dovrei effettuare una operazione di '),write(OperazioneScelta),messageA(sport1,send_message(OperazioneScelta,Me)),nl.
 	
 	
 	
-/*	
-initE :> write('Sono cliente1, devo effettuare una operazione di '),messageA(sport1,send_message(prelievo(Me),Me)),messageA(sport2,send_message(prelievo(Me),Me)).
-
-quanto_prelievoE(C) :> write('Prelevo 200 euro'),messageA(C,send_message(esegui_prelievo(200),Me)).  
-C contiene lo sportellista
-*/
+/*initE :> write('Sono cliente1, devo effettuare una operazione di '),messageA(sport1,send_message(prelievo(Me),Me)),messageA(sport2,send_message(prelievo(Me),Me)).*/

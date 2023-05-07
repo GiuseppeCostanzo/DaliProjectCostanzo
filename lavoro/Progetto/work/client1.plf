@@ -175,3 +175,13 @@ remember_event_mod(message(sport1,send_message(deposito(_869901),_869901)),numbe
 past_event(message(sport1,send_message(deposito(_869901),_869901)),60).
 action(message(sport1,send_message(deposito(_869901),_869901)),normal).
 mod(message(sport1,send_message(deposito(_869901),_869901)),check).
+remember_event_mod(message(_878913,send_message(esegui_prelievo(_878925,200),_878925)),number(5),last).
+past_event(message(_878913,send_message(esegui_prelievo(_878925,200),_878925)),60).
+action(message(sport1,send_message(esegui_prelievo(_878925,200),_878925)),normal).
+mod(message(sport1,send_message(esegui_prelievo(_878925,200),_878925)),check).
+action(message(_878913,send_message(esegui_prelievo(_878925,200),_878925)),normal).
+mod(message(_878913,send_message(esegui_prelievo(_878925,200),_878925)),check).
+remember_event_mod(quantoPrelievo(_878905),number(5),last).
+past_event(quantoPrelievo(_878905),60).
+external_event(quantoPrelievo,normal).
+mod(quantoPrelievo,check).

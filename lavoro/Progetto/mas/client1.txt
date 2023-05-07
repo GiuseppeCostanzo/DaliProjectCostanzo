@@ -26,9 +26,4 @@ scelta_operazioneI(Operazione) :>
 	
 	
 	
-/*	
-initE :> write('Sono cliente1, devo effettuare una operazione di '),messageA(sport1,send_message(prelievo(Me),Me)),messageA(sport2,send_message(prelievo(Me),Me)).
-
-quanto_prelievoE(C) :> write('Prelevo 200 euro'),messageA(C,send_message(esegui_prelievo(200),Me)).  
-C contiene lo sportellista
-*/
+/*initE :> write('Sono cliente1, devo effettuare una operazione di '),messageA(sport1,send_message(prelievo(Me),Me)),messageA(sport2,send_message(prelievo(Me),Me)).*/
