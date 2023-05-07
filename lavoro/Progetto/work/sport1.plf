@@ -141,3 +141,7 @@ remember_event_mod(prelevare(_858265,_858267),number(5),last).
 past_event(prelevare(_858265,_858267),60).
 external_event(prelevare,normal).
 mod(prelevare,check).
+remember_event_mod(pagare(_860879,_860881),number(5),last).
+past_event(pagare(_860879,_860881),60).
+external_event(pagare,normal).
+mod(pagare,check).

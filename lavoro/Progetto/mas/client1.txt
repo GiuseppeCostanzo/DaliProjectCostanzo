@@ -26,4 +26,3 @@ scelta_operazioneI(Operazione) :>
 	
 	
 	
-/*initE :> write('Sono cliente1, devo effettuare una operazione di '),messageA(sport1,send_message(prelievo(Me),Me)),messageA(sport2,send_message(prelievo(Me),Me)).*/

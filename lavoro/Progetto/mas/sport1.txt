@@ -1,10 +1,5 @@
 :- dynamic saldo/2.
-sempre(vero).
-/*
-ruolo(sportellista).
-prelievoE(B) :> write('Salve '),write(B),write(' quanto deve prelevare?'),messageA(B,send_message(quanto_prelievo(Me),Me)).
-esegui_prelievoE(A) :> write('Operazione effettuata, hai prelevato '), write(A).
-*/
+
 
 
 /* Simulazione database della banca */
@@ -21,6 +16,7 @@ depositoE(C) :> write('Salve quanto deve depositare?'),messageA(C,send_message(q
 prelevareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');write('Il prelievo e andato a buon fine')),nl.
 
 /* Routine per verificare il pagamento */
+pagareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo utilizzare piu di quanto tiene depositato');write('Il pagamento e andato a buon fine')),nl.
 
 
 
