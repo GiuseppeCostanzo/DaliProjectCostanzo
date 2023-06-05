@@ -1,9 +1,0 @@
-[].
-[gest_learn(var_H),scelta_operazione(var_Operazione),external_refused_action_propose(var_A,var_Ag),refused_message(var_AgM,var_Con)].
-[learned(var_H),message(_295217,confirm(learn(_295229),_295225)),message(var_Ag,reply(received(var_X),var_A)),message(var_Ag,accept_proposal(var_A,[],var_AgI)),message(var_Ag,failure(var_A,motivation(false_conditions),var_Ai)),message(var_Ag,inform(agree(var_X),values(no),var_A)),message(var_Ag,inform(agree(var_X),values(yes),var_A)),message(var_Ag,inform(query_ref(var_X,var_N),motivation(no_values),var_A)),message(var_Ag,inform(query_ref(var_X,var_N),values(var_L),var_A)),message(var_Ag,propose(var_A,[_295361],var_AgI)),message(var_Ag,refuse(agree(variable),motivation(refused_variables),var_A)),message(var_Ag,refuse(query_ref(variable),motivation(refused_variables),var_A)),message(var_Ag,reject_proposal(var_A,[],var_AgI)),message(var_AgM,inform(var_Con,motivation(refused_message),var_Ai)),message(var_S,send_message(sent_rmi(var_X,var_T,var_S0),var_Ag))].
-[].
-[].
-[].
-[].
-[].
-[].

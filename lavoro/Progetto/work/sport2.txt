@@ -1,5 +1,0 @@
-ruolo(sportellista).
-
-prelievoE(B) :> write('Salve '),write(B),write(' quanto deve prelevare?'),messageA(B,send_message(quanto_prelievo(Me),Me)).
-
-esegui_prelievoE(A) :> write('Operazione effettuata, hai prelevato '), write(A).

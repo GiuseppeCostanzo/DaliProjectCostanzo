@@ -3,22 +3,27 @@
 
 
 /* Simulazione database della banca */
-saldo(client1,50).
+saldo(client1,100).
 saldo(client2,400).
 
 
 /* Risposte per il cliente */
-prelievoE(A) :> write('Salve quanto deve prelevare?'),messageA(A,send_message(quantoPrelievo,Me)),nl.
-pagamentoE(B) :> write('Salve quanto deve pagare?'),messageA(B,send_message(quantoPagamento,Me)),nl.
-depositoE(C) :> write('Salve quanto deve depositare?'),messageA(C,send_message(quantoDeposito,Me)),nl.
+prelievoE(A,D) :> write('Salve quanto deve prelevare '),write(D),write('?'),messageA(A,send_message(quantoPrelievo,Me)),nl.
+pagamentoE(B,E) :> write('Salve quanto deve pagare '),write(E),write('?'),messageA(B,send_message(quantoPagamento,Me)),nl.
+depositoE(C,F) :> write('Salve quanto deve depositare '),write(F),write('?'),messageA(C,send_message(quantoDeposito,Me)),nl.
 
 /* Routine per verificare il prelievo - C è il cliente, Q è quanto deve prelevare*/
-prelevareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');write('Il prelievo e andato a buon fine')),nl.
+prelevareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');
+					write('Il prelievo e andato a buon fine'),nl,aggiorna_saldo(C,Q)).
 
 /* Routine per verificare il pagamento */
-pagareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo utilizzare piu di quanto tiene depositato');write('Il pagamento e andato a buon fine')),nl.
+pagareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo utilizzare piu di quanto tiene depositato');
+				write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(C,Q)).
+
+aggiorna_saldo(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo - Q, assert(saldo(C, NewSaldo)),write('Il SALDO aggiornato e '),write(NewSaldo),nl.
 
 
+/* Routine per il deposito - C è il cliente, Q è quanto deve depositare */
+depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro'),nl,aggiorna_deposito(C,Q).
+aggiorna_deposito(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo + Q, assert(saldo(C, NewSaldo)),write('Il nuovo saldo e '),write(NewSaldo),nl.
 
-/* Routine per il deposito */
-depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro'),nl.

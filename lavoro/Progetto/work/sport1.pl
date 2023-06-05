@@ -1,21 +1,25 @@
 
 :-dynamic saldo/2.
 
-saldo(client1,50).
+saldo(client1,100).
 
 saldo(client2,400).
 
-eve(prelievo(var_A)):-write('Salve quanto deve prelevare?'),a(message(var_A,send_message(quantoPrelievo,var_Me))),nl.
+eve(prelievo(var_A,var_D)):-write('Salve quanto deve prelevare '),write(var_D),write('?'),a(message(var_A,send_message(quantoPrelievo,var_Me))),nl.
 
-eve(pagamento(var_B)):-write('Salve quanto deve pagare?'),a(message(var_B,send_message(quantoPagamento,var_Me))),nl.
+eve(pagamento(var_B,var_E)):-write('Salve quanto deve pagare '),write(var_E),write('?'),a(message(var_B,send_message(quantoPagamento,var_Me))),nl.
 
-eve(deposito(var_C)):-write('Salve quanto deve depositare?'),a(message(var_C,send_message(quantoDeposito,var_Me))),nl.
+eve(deposito(var_C,var_F)):-write('Salve quanto deve depositare '),write(var_F),write('?'),a(message(var_C,send_message(quantoDeposito,var_Me))),nl.
 
-eve(prelevare(var_C,var_Q)):-saldo(var__,var_X),(var_Q>var_X->write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');write('Il prelievo e andato a buon fine')),nl.
+eve(prelevare(var_C,var_Q)):-saldo(var__,var_X),(var_Q>var_X->write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');write('Il prelievo e andato a buon fine'),nl,aggiorna_saldo(var_C,var_Q)).
 
-eve(pagare(var_C,var_Q)):-saldo(var__,var_X),(var_Q>var_X->write('Mi spiace ma non puo utilizzare piu di quanto tiene depositato');write('Il pagamento e andato a buon fine')),nl.
+eve(pagare(var_C,var_Q)):-saldo(var__,var_X),(var_Q>var_X->write('Mi spiace ma non puo utilizzare piu di quanto tiene depositato');write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(var_C,var_Q)).
 
-eve(depositare(var_C,var_Q)):-write('Bene, lei ha appena depositato sul suo conto '),write(var_Q),write(' euro'),nl.
+aggiorna_saldo(var_C,var_Q):-retract(saldo(var_C,var_OldSaldo)),var_NewSaldo is var_OldSaldo-var_Q,assert(saldo(var_C,var_NewSaldo)),write('Il SALDO aggiornato e '),write(var_NewSaldo),nl.
+
+eve(depositare(var_C,var_Q)):-write('Bene, lei ha appena depositato sul suo conto '),write(var_Q),write(' euro'),nl,aggiorna_deposito(var_C,var_Q).
+
+aggiorna_deposito(var_C,var_Q):-retract(saldo(var_C,var_OldSaldo)),var_NewSaldo is var_OldSaldo+var_Q,assert(saldo(var_C,var_NewSaldo)),write('Il nuovo saldo e '),write(var_NewSaldo),nl.
 
 :-dynamic receive/1.
 
@@ -107,11 +111,11 @@ call_inform(var_X,var_Ag,var_T):-asse_cosa(past_event(inform(var_X,var_Ag),var_T
 
 call_refuse(var_X,var_Ag,var_T):-clause(agent(var_A),var__),asse_cosa(past_event(var_X,var_T)),statistics(walltime,[var_Tp,var__]),retractall(past(var_X,var__,var_Ag)),assert(past(var_X,var_Tp,var_Ag)),a(message(var_Ag,reply(received(var_X),var_A))).
 
-call_cfp(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_332849,var_Ontology,_332853),_332843),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_cfp(var_A,var_C,var_Ag,_332887)),a(message(var_Ag,propose(var_A,[_332887],var_AgI))),retractall(ext_agent(var_Ag,_332925,var_Ontology,_332929)).
+call_cfp(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_349737,var_Ontology,_349741),_349731),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_cfp(var_A,var_C,var_Ag,_349775)),a(message(var_Ag,propose(var_A,[_349775],var_AgI))),retractall(ext_agent(var_Ag,_349813,var_Ontology,_349817)).
 
-call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_332723,var_Ontology,_332727),_332717),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,accept_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_332793,var_Ontology,_332797)).
+call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_349611,var_Ontology,_349615),_349605),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,accept_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_349681,var_Ontology,_349685)).
 
-call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_332611,var_Ontology,_332615),_332605),not(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,reject_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_332667,var_Ontology,_332671)).
+call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_349499,var_Ontology,_349503),_349493),not(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,reject_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_349555,var_Ontology,_349559)).
 
 call_accept_proposal(var_A,var_Mp,var_Ag,var_T):-asse_cosa(past_event(accepted_proposal(var_A,var_Mp,var_Ag),var_T)),statistics(walltime,[var_Tp,var__]),retractall(past(accepted_proposal(var_A,var_Mp,var_Ag),var__,var_Ag)),assert(past(accepted_proposal(var_A,var_Mp,var_Ag),var_Tp,var_Ag)).
 
@@ -119,7 +123,7 @@ call_reject_proposal(var_A,var_Mp,var_Ag,var_T):-asse_cosa(past_event(rejected_p
 
 call_failure(var_A,var_M,var_Ag,var_T):-asse_cosa(past_event(failed_action(var_A,var_M,var_Ag),var_T)),statistics(walltime,[var_Tp,var__]),retractall(past(failed_action(var_A,var_M,var_Ag),var__,var_Ag)),assert(past(failed_action(var_A,var_M,var_Ag),var_Tp,var_Ag)).
 
-call_cancel(var_A,var_Ag):-if(clause(high_action(var_A,var_Te,var_Ag),_332175),retractall(high_action(var_A,var_Te,var_Ag)),true),if(clause(normal_action(var_A,var_Te,var_Ag),_332209),retractall(normal_action(var_A,var_Te,var_Ag)),true).
+call_cancel(var_A,var_Ag):-if(clause(high_action(var_A,var_Te,var_Ag),_349063),retractall(high_action(var_A,var_Te,var_Ag)),true),if(clause(normal_action(var_A,var_Te,var_Ag),_349097),retractall(normal_action(var_A,var_Te,var_Ag)),true).
 
 external_refused_action_propose(var_A,var_Ag):-clause(not_executable_action_propose(var_A,var_Ag),var__).
 
@@ -127,17 +131,17 @@ evi(external_refused_action_propose(var_A,var_Ag)):-clause(agent(var_Ai),var__),
 
 refused_message(var_AgM,var_Con):-clause(eliminated_message(var_AgM,var__,var__,var_Con,var__),var__).
 
-refused_message(var_To,var_M):-clause(eliminated_message(var_M,var_To,motivation(conditions_not_verified)),_331991).
+refused_message(var_To,var_M):-clause(eliminated_message(var_M,var_To,motivation(conditions_not_verified)),_348879).
 
 evi(refused_message(var_AgM,var_Con)):-clause(agent(var_Ai),var__),a(message(var_AgM,inform(var_Con,motivation(refused_message),var_Ai))),retractall(eliminated_message(var_AgM,var__,var__,var_Con,var__)),retractall(eliminated_message(var_Con,var_AgM,motivation(conditions_not_verified))).
 
-send_jasper_return_message(var_X,var_S,var_T,var_S0):-clause(agent(var_Ag),_331839),a(message(var_S,send_message(sent_rmi(var_X,var_T,var_S0),var_Ag))).
+send_jasper_return_message(var_X,var_S,var_T,var_S0):-clause(agent(var_Ag),_348727),a(message(var_S,send_message(sent_rmi(var_X,var_T,var_S0),var_Ag))).
 
-gest_learn(var_H):-clause(past(learn(var_H),var_T,var_U),_331787),learn_if(var_H,var_T,var_U).
+gest_learn(var_H):-clause(past(learn(var_H),var_T,var_U),_348675),learn_if(var_H,var_T,var_U).
 
-evi(gest_learn(var_H)):-retractall(past(learn(var_H),_331663,_331665)),clause(agente(_331685,_331687,_331689,var_S),_331681),name(var_S,var_N),append(var_L,[46,112,108],var_N),name(var_F,var_L),manage_lg(var_H,var_F),a(learned(var_H)).
+evi(gest_learn(var_H)):-retractall(past(learn(var_H),_348551,_348553)),clause(agente(_348573,_348575,_348577,var_S),_348569),name(var_S,var_N),append(var_L,[46,112,108],var_N),name(var_F,var_L),manage_lg(var_H,var_F),a(learned(var_H)).
 
-cllearn:-clause(agente(_331457,_331459,_331461,var_S),_331453),name(var_S,var_N),append(var_L,[46,112,108],var_N),append(var_L,[46,116,120,116],var_To),name(var_FI,var_To),open(var_FI,read,_331557,[]),repeat,read(_331557,var_T),arg(1,var_T,var_H),write(var_H),nl,var_T==end_of_file,!,close(_331557).
+cllearn:-clause(agente(_348345,_348347,_348349,var_S),_348341),name(var_S,var_N),append(var_L,[46,112,108],var_N),append(var_L,[46,116,120,116],var_To),name(var_FI,var_To),open(var_FI,read,_348445,[]),repeat,read(_348445,var_T),arg(1,var_T,var_H),write(var_H),nl,var_T==end_of_file,!,close(_348445).
 
 send_msg_learn(var_T,var_A,var_Ag):-a(message(var_Ag,confirm(learn(var_T),var_A))).
 

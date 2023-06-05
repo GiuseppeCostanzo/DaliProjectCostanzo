@@ -1,3 +1,4 @@
+
 /*
 Tipolgie di operazione: 
 1 -> Prelievo
@@ -5,24 +6,24 @@ Tipolgie di operazione:
 3 -> Deposito
 */
 
+
 /* Fatti */
-sempre(vero).
+stato(sveglio).
 nome_agente(cliente1).
 
 quantoDepositoE :> write('Dovrei depositare 400 euro '),nl,messageA(sport1,send_message(depositare(Me,400),Me)).
-quantoPrelievoE :> write('Dovrei prelevare 300 euro '),nl,messageA(sport1,send_message(prelevare(Me,300),Me)).
+quantoPrelievoE :> write('Dovrei prelevare 400 euro '),nl,messageA(sport1,send_message(prelevare(Me,300),Me)).
 quantoPagamentoE :> write('Dovrei pagare 175 euro '),nl,messageA(sport1,send_message(pagare(Me,175),Me)).
 
 
-
 /* Richiesta operazione allo sportellista */
-scelta_operazione(Operazione) :- sempre(vero).
+scelta_operazione(Operazione) :- stato(X),X = sveglio.
 scelta_operazioneI(Operazione) :>
     random(1, 4, Operazione), 
-    (Operazione == 1 -> OperazioneScelta = prelievo(Me) ; 
-     Operazione == 2 -> OperazioneScelta = pagamento(Me) ; 
-     Operazione == 3 -> OperazioneScelta = deposito(Me)),
-    write('Salve dovrei effettuare una operazione di '),write(OperazioneScelta),messageA(sport1,send_message(OperazioneScelta,Me)),nl.
+    (Operazione == 1 -> OperazioneScelta = prelievo(Me,cliente1),write('Salve dovrei effettuare una operazione di prelievo!'),nl ; 
+     Operazione == 2 -> OperazioneScelta = pagamento(Me,cliente1),write('Salve dovrei effettuare una operazione di pagamento!'),nl ; 
+     Operazione == 3 -> OperazioneScelta = deposito(Me,cliente1),write('Salve dovrei effettuare una operazione di deposito!'),nl),
+	 messageA(sport1,send_message(OperazioneScelta,Me)),nl.
 	
 	
 	

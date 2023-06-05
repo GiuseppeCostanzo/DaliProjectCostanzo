@@ -1,3 +1,0 @@
-
-
-ciao_eventoE :> messageA(agent1,send_message(evento,agent2)).

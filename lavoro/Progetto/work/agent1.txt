@@ -1,1 +1,0 @@
-eventoE :> write('Agente1 ha ricevuto evento').
