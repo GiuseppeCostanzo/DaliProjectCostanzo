@@ -1,6 +1,0 @@
-send_message(send_message(quantoDeposito,_44233))
-send_message(send_message(quantoDeposito,_44031))
-send_message(send_message(quantoPrelievo,_44031))
-send_message(send_message(quantoDeposito,_43981))
-send_message(send_message(quantoPrelievo,_44031))
-send_message(send_message(quantoDeposito,_2991))
