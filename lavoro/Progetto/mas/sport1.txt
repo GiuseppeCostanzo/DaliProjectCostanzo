@@ -5,13 +5,15 @@
 
 saldo(client1,500).
 saldo(client2,400).
-coda(0,0).
+coda(client0,999).
 inizio(falso).
 scrittoBenvenuto(falso).
 
 messaggioInizio :- inizio(falso),scrittoBenvenuto(falso).
 messaggioInizioI :> write('Sono lo sportellista, attendo che qualcuno venga ad effettuare una operazione'),nl,retract(scrittoBenvenuto(falso)),assert(scrittoBenvenuto(vero)).
-aggiorna_clienti_attesaE(A,P) :> assert(coda(A,P)),retract(inizio(falso)),assert(inizio(vero)).
+
+/* A sarebbe id cliente, P sarebbe il suo progressivo passato dal ticket */
+aggiorna_clienti_attesaE(A,P) :> assert(coda(A,P)),retract(inizio(falso)),assert(inizio(vero)),assert(coda(A,P)),write('ok, nuovo cliente in coda'),nl,write(coda(A,P)),nl.
 
 prelievoE(A,D) :> write('Salve quanto deve prelevare '),write(D),write('?'),messageA(A,send_message(quantoPrelievo,Me)),nl.
 pagamentoE(B,E) :> write('Salve quanto deve pagare '),write(E),write('?'),messageA(B,send_message(quantoPagamento,Me)),nl.
@@ -32,12 +34,21 @@ aggiorna_deposito(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo + Q, 
 
 /*da aggiustare qui*/
 sportellista_chiama :- inizio(vero).
-sportellista_chiamaI :> trova_minimo_nome(next_client),messageA(next_client,send_message(sportellista_chiama,Me)),write('Il prossimo e '),write(next_client),nl.
+sportellista_chiamaI :> trova_minimo_nome(NomeMin),messageA(NomeMin,send_message(sportellista_chiama,Me)),write('Il prossimo e '),write(NomeMin),nl.
+/*sportellista_chiamaI :> write('Minimo nome: '),trova_minimo_nome(NomeMin),write(NomeMin),nl.*/
 
-
+/*Trovare il nome dell'agente avente progressivo (cioè id) più piccolo - la procedura è corretta (testata)*/
 trova_minimo_nome(NomeMin) :- findall(Nome-Id, (coda(Nome, Id), Id > 0), ListaFatti),trova_minimo_id(ListaFatti, 9999, _, NomeMin).
 trova_minimo_id([Nome-Id | Resto], IdAttuale, NomeAttuale, NomeMin) :-
     (Id < IdAttuale ->
         trova_minimo_id(Resto, Id, Nome, NomeMin);
         trova_minimo_id(Resto, IdAttuale, NomeAttuale, NomeMin)).
 trova_minimo_id([], _, NomeMin, NomeMin).
+
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+:- dynamic coda/2.
+
+coda(client0,999).
+coda(client1,15).
+coda(client2,5).
+inizio(vero).
+
+parti :- inizio(vero).
+partiI :> write('Minimo nome: '),trova_minimo_nome(NomeMin),write(NomeMin),nl.
+
+trova_minimo_nome(NomeMin) :- findall(Nome-Id, (coda(Nome, Id), Id > 0), ListaFatti),trova_minimo_id(ListaFatti, 9999, _, NomeMin).
+trova_minimo_id([Nome-Id | Resto], IdAttuale, NomeAttuale, NomeMin) :-
+    (Id < IdAttuale ->
+        trova_minimo_id(Resto, Id, Nome, NomeMin);
+        trova_minimo_id(Resto, IdAttuale, NomeAttuale, NomeMin)).
+trova_minimo_id([], _, NomeMin, NomeMin).
+
+

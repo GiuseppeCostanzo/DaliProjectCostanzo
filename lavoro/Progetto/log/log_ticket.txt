@@ -1,2 +1,6 @@
-send_message(send_message(eroga_ticket(1),_2767))
-send_message(send_message(aggiorna_clienti_attesa(client1,1),_32047))
+send_message(send_message(eroga_ticket(1),_41177))
+send_message(send_message(aggiorna_clienti_attesa(client1,1),_41145))
+send_message(send_message(eroga_ticket(2),_45965))
+send_message(send_message(aggiorna_clienti_attesa(client2,2),_45937))
+send_message(send_message(eroga_ticket(3),_27387))
+send_message(send_message(aggiorna_clienti_attesa(client2,3),_32031))

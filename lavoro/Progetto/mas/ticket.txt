@@ -2,6 +2,7 @@
 
 biglietto(0).
 
+/* A sarebbe id cliente, N sarebbe il nome stringa del cliente, NewVal sarebbe il progressivo */
 richiede_ticketE(A,N) :> write('Salve '),write(N),nl,aggiorna_progressivo(A,N).
 aggiorna_progressivo(A,N) :> retract(biglietto(OldVal)), NewVal is OldVal + 1, assert(biglietto(NewVal)),write('Il suo ticket e il numero '),
 						write(NewVal),nl,messageA(A,send_message(eroga_ticket(NewVal),Me)),messageA(sport1,send_message(aggiorna_clienti_attesa(A,NewVal),Me)).

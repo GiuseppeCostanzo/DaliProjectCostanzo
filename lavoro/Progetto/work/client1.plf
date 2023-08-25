@@ -88,7 +88,7 @@ past_event(message(ticket,send_message(richiede_ticket(_883547,cliente1),_883547
 remember_event_mod(message(ticket,send_message(richiede_ticket(_883547,cliente1),_883547)),number(5),last).
 past_event(refused_message(_883463,_883465),60).
 remember_event_mod(refused_message(_883463,_883465),number(5),last).
-internal_event(richiesta_ticket,20,forever,true,until_cond(past(richiesta_ticket))).
+internal_event(richiesta_ticket,40,forever,true,until_cond(past(richiesta_ticket))).
 internal_event(gest_learn(_883437),3,forever,true,until_cond(past(gest_learn(_883437)))).
 internal_event(scelta_operazione(_883445),1,forever,true,until_cond(past(scelta_operazione(_883445)))).
 internal_event(external_refused_action_propose(_883453,_883455),3,forever,true,until_cond(past(external_refused_action_propose(_883453,_883455)))).
