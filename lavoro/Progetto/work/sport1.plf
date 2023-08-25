@@ -144,3 +144,11 @@ mod(message(next_client,send_message(sportellista_chiama,_935885)),check).
 remember_event_mod(messaggioInizio,number(5),last).
 past_event(messaggioInizio,60).
 internal_event(messaggioInizio,3,forever,true,until_cond(past(messaggioInizio))).
+remember_event_mod(message(_972513,send_message(sportellista_chiamando,_972521)),number(5),last).
+past_event(message(_972513,send_message(sportellista_chiamando,_972521)),60).
+action(message(_972513,send_message(sportellista_chiamando,_972521)),normal).
+mod(message(_972513,send_message(sportellista_chiamando,_972521)),check).
+remember_event_mod(message(_985781,send_message(fineOperazione,_985789)),number(5),last).
+past_event(message(_985781,send_message(fineOperazione,_985789)),60).
+action(message(_985781,send_message(fineOperazione,_985789)),normal).
+mod(message(_985781,send_message(fineOperazione,_985789)),check).

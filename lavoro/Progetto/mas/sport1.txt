@@ -19,22 +19,25 @@ prelievoE(A,D) :> write('Salve quanto deve prelevare '),write(D),write('?'),mess
 pagamentoE(B,E) :> write('Salve quanto deve pagare '),write(E),write('?'),messageA(B,send_message(quantoPagamento,Me)),nl.
 depositoE(C,F) :> write('Salve quanto deve depositare '),write(F),write('?'),messageA(C,send_message(quantoDeposito,Me)),nl.
 
+/* C sarebbe id cliente, Q il nome cliente */
+/* messageA(C,send_message(fineOperazione,Me)),nl. */
+					
 prelevareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');
-					write('Il prelievo e andato a buon fine'),nl,aggiorna_saldo(C,Q)).
-
+					write('Il prelievo e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),nl.					
+					
 pagareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo utilizzare piu di quanto tiene depositato');
-				write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(C,Q)).
+				write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),nl.
 
 aggiorna_saldo(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo - Q, assert(saldo(C, NewSaldo)),write('Il SALDO aggiornato e '),write(NewSaldo),nl.
 
 
-depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro'),nl,aggiorna_deposito(C,Q).
+depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro'),nl,aggiorna_deposito(C,Q),messageA(C,send_message(fineOperazione,Me)),nl.
 aggiorna_deposito(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo + Q, assert(saldo(C, NewSaldo)),write('Il nuovo saldo e '),write(NewSaldo),nl.
 
 
 /*da aggiustare qui*/
 sportellista_chiama :- inizio(vero).
-sportellista_chiamaI :> trova_minimo_nome(NomeMin),messageA(NomeMin,send_message(sportellista_chiama,Me)),write('Il prossimo e '),write(NomeMin),nl.
+sportellista_chiamaI :> trova_minimo_nome(NomeMin),write('Il prossimo e '),write(NomeMin),messageA(NomeMin,send_message(sportellista_chiamando,Me)),nl.
 /*sportellista_chiamaI :> write('Minimo nome: '),trova_minimo_nome(NomeMin),write(NomeMin),nl.*/
 
 /*Trovare il nome dell'agente avente progressivo (cioè id) più piccolo - la procedura è corretta (testata)*/

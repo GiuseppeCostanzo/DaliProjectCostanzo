@@ -24,14 +24,14 @@ quantoPagamentoE :> write('Dovrei pagare 80 euro '),nl,messageA(sport1,send_mess
 
 /* Richiesta operazione allo sportellista - il cliente deve essere chiamato dallo sportellista */
 
-sportellista_chiamaE :> retract(chiamato(falso)),assert(chiamato(vero)).
+sportellista_chiamandoE :> retract(chiamato(falso)),assert(chiamato(vero)).
 scelta_operazione(Operazione) :- ticket_erogato(vero),chiamato(vero).
 
 scelta_operazioneI(Operazione) :>
     random(1, 4, Operazione), 
-    (Operazione == 1 -> OperazioneScelta = prelievo(Me,cliente2),write('Salve, sono cliente2, dovrei effettuare una operazione di prelievo!'),nl ; 
-     Operazione == 2 -> OperazioneScelta = prelievo(Me,cliente2),write('Salve, sono cliente2, dovrei effettuare una operazione di prelievo!'),nl ; 
-     Operazione == 3 -> OperazioneScelta = prelievo(Me,cliente2),write('Salve, sono cliente2, dovrei effettuare una operazione di prelievo!'),nl),
+    (Operazione == 1 -> OperazioneScelta = deposito(Me,cliente2),write('Salve, sono cliente2, dovrei effettuare una operazione di deposito!'),nl ; 
+     Operazione == 2 -> OperazioneScelta = deposito(Me,cliente2),write('Salve, sono cliente2, dovrei effettuare una operazione di deposito!'),nl ; 
+     Operazione == 3 -> OperazioneScelta = deposito(Me,cliente2),write('Salve, sono cliente2, dovrei effettuare una operazione di deposito!'),nl),
 	 messageA(sport1,send_message(OperazioneScelta,Me)),nl.
 	
 	

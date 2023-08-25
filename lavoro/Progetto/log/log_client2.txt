@@ -1,2 +1,1 @@
 send_message(send_message(richiede_ticket(_32577,cliente2),_32577))
-send_message(send_message(richiede_ticket(_32551,cliente2),_32551))

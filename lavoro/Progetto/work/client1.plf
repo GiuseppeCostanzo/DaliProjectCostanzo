@@ -116,3 +116,11 @@ remember_event_mod(eroga_ticket(_921623),number(5),last).
 past_event(eroga_ticket(_921623),60).
 external_event(eroga_ticket,normal).
 mod(eroga_ticket,check).
+remember_event_mod(sportellista_chiamando,number(5),last).
+past_event(sportellista_chiamando,60).
+external_event(sportellista_chiamando,normal).
+mod(sportellista_chiamando,check).
+remember_event_mod(fineOperazione,number(5),last).
+past_event(fineOperazione,60).
+external_event(fineOperazione,normal).
+mod(fineOperazione,check).
