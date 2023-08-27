@@ -152,3 +152,6 @@ remember_event_mod(message(_985781,send_message(fineOperazione,_985789)),number(
 past_event(message(_985781,send_message(fineOperazione,_985789)),60).
 action(message(_985781,send_message(fineOperazione,_985789)),normal).
 mod(message(_985781,send_message(fineOperazione,_985789)),check).
+remember_event_mod(continua,number(5),last).
+past_event(continua,60).
+internal_event(continua,3,forever,true,until_cond(past(continua))).

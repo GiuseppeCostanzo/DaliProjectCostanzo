@@ -32,9 +32,9 @@ scelta_operazioneI(Operazione) :>
     (Operazione == 1 -> OperazioneScelta = prelievo(Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di prelievo!'),nl ; 
      Operazione == 2 -> OperazioneScelta = pagamento(Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di pagamento!'),nl ; 
      Operazione == 3 -> OperazioneScelta = deposito(Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di deposito!'),nl),
-	 messageA(sport1,send_message(OperazioneScelta,Me)),nl.
+	 messageA(sport1,send_message(OperazioneScelta,Me)),retract(chiamato(vero)),assert(chiamato(falso)),nl.
 	
-fineOperazioneE :> write('Grazie, a presto'),retract(chiamato(vero)),assert(chiamato(falso)),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
+fineOperazioneE :> write('Grazie, a presto'),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
 	
 /* Richiesta ticket al bigliettaio */
 richiesta_ticket :- stato(sveglio).

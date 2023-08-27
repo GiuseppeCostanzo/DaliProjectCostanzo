@@ -2,17 +2,17 @@
 
 coda(client0,999).
 coda(client1,15).
-coda(client2,5).
+coda(client2,55).
 inizio(vero).
 
 parti :- inizio(vero).
-partiI :> write('Minimo nome: '),trova_minimo_nome(NomeMin),write(NomeMin),nl.
+partiI :> write('Minimo nome: '),trova_minimo_nome(NomeMin,Prog),write(NomeMin),nl,write(Prog),nl.
 
-trova_minimo_nome(NomeMin) :- findall(Nome-Id, (coda(Nome, Id), Id > 0), ListaFatti),trova_minimo_id(ListaFatti, 9999, _, NomeMin).
-trova_minimo_id([Nome-Id | Resto], IdAttuale, NomeAttuale, NomeMin) :-
-    (Id < IdAttuale ->
-        trova_minimo_id(Resto, Id, Nome, NomeMin);
-        trova_minimo_id(Resto, IdAttuale, NomeAttuale, NomeMin)).
-trova_minimo_id([], _, NomeMin, NomeMin).
+trova_minimo_nome(NomeMin,Prog) :- findall(Nome-Prog, (coda(Nome, Prog), Prog > 0), ListaFatti),trova_minimo_Prog(ListaFatti, 9999, _, NomeMin).
+trova_minimo_Prog([Nome-Prog | Resto], ProgAttuale, NomeAttuale, NomeMin) :-
+    (Prog < ProgAttuale ->
+        trova_minimo_Prog(Resto, Prog, Nome, NomeMin);
+        trova_minimo_Prog(Resto, ProgAttuale, NomeAttuale, NomeMin)).
+trova_minimo_Prog([], _, NomeMin, NomeMin).
 
 

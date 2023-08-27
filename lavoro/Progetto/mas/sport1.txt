@@ -2,12 +2,14 @@
 :- dynamic coda/2.
 :- dynamic inizio/1.
 :- dynamic scrittoBenvenuto/1.
+:- dynamic occupato/1.
 
 saldo(client1,500).
 saldo(client2,400).
-coda(client0,999).
+coda(client0,99).
 inizio(falso).
 scrittoBenvenuto(falso).
+occupato(falso).
 
 messaggioInizio :- inizio(falso),scrittoBenvenuto(falso).
 messaggioInizioI :> write('Sono lo sportellista, attendo che qualcuno venga ad effettuare una operazione'),nl,retract(scrittoBenvenuto(falso)),assert(scrittoBenvenuto(vero)).
@@ -19,26 +21,31 @@ prelievoE(A,D) :> write('Salve quanto deve prelevare '),write(D),write('?'),mess
 pagamentoE(B,E) :> write('Salve quanto deve pagare '),write(E),write('?'),messageA(B,send_message(quantoPagamento,Me)),nl.
 depositoE(C,F) :> write('Salve quanto deve depositare '),write(F),write('?'),messageA(C,send_message(quantoDeposito,Me)),nl.
 
-/* C sarebbe id cliente, Q il nome cliente */
-/* messageA(C,send_message(fineOperazione,Me)),nl. */
+/* C sarebbe id cliente, Q la quantità dell operazione */
 					
 prelevareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo prelevare piu di quanto tiene depositato');
-					write('Il prelievo e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),nl.					
+					write('Il prelievo e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),
+					trova_minimo_nome(NomeMin),retract(coda(NomeMin,_)),retract(occupato(vero)),assert(occupato(falso)),nl.					
 					
 pagareE(C,Q) :> saldo(_,X),(Q > X -> write('Mi spiace ma non puo utilizzare piu di quanto tiene depositato');
-				write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),nl.
-
+				write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),
+				trova_minimo_nome(NomeMin),retract(coda(NomeMin,_)),retract(occupato(vero)),assert(occupato(falso)),nl.
+				
 aggiorna_saldo(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo - Q, assert(saldo(C, NewSaldo)),write('Il SALDO aggiornato e '),write(NewSaldo),nl.
 
 
-depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro'),nl,aggiorna_deposito(C,Q),messageA(C,send_message(fineOperazione,Me)),nl.
+depositareE(C,Q) :> write('Bene, lei ha appena depositato sul suo conto '),write(Q),write(' euro'),nl,aggiorna_deposito(C,Q),
+						messageA(C,send_message(fineOperazione,Me)),trova_minimo_nome(NomeMin),retract(coda(NomeMin,_)),
+						retract(occupato(vero)),assert(occupato(falso)),nl.
 aggiorna_deposito(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo + Q, assert(saldo(C, NewSaldo)),write('Il nuovo saldo e '),write(NewSaldo),nl.
 
 
-/*da aggiustare qui*/
-sportellista_chiama :- inizio(vero).
-sportellista_chiamaI :> trova_minimo_nome(NomeMin),write('Il prossimo e '),write(NomeMin),messageA(NomeMin,send_message(sportellista_chiamando,Me)),nl.
-/*sportellista_chiamaI :> write('Minimo nome: '),trova_minimo_nome(NomeMin),write(NomeMin),nl.*/
+sportellista_chiama :- inizio(vero),occupato(falso).		
+			
+sportellista_chiamaI :> trova_minimo_nome(NomeMin),(NomeMin = 'client0' -> write('Al momento nessuno in coda'),nl;continua).			
+continua :> trova_minimo_nome(NomeMin),write('Il prossimo e '),write(NomeMin),messageA(NomeMin,send_message(sportellista_chiamando,Me)),nl.										
+
+/* write('Il prossimo e '),write(NomeMin),messageA(NomeMin,send_message(sportellista_chiamando,Me)),retract(occupato(falso)),assert(occupato(vero)),nl */
 
 /*Trovare il nome dell'agente avente progressivo (cioè id) più piccolo - la procedura è corretta (testata)*/
 trova_minimo_nome(NomeMin) :- findall(Nome-Id, (coda(Nome, Id), Id > 0), ListaFatti),trova_minimo_id(ListaFatti, 9999, _, NomeMin).

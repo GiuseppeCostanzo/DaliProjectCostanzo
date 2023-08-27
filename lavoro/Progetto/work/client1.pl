@@ -25,9 +25,9 @@ eve(sportellista_chiamando):-retract(chiamato(falso)),assert(chiamato(vero)).
 
 scelta_operazione(var_Operazione):-ticket_erogato(vero),chiamato(vero).
 
-evi(scelta_operazione(var_Operazione)):-random(1,4,var_Operazione),(var_Operazione==1->var_OperazioneScelta=prelievo(var_Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di prelievo!'),nl;var_Operazione==2->var_OperazioneScelta=pagamento(var_Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di pagamento!'),nl;var_Operazione==3->var_OperazioneScelta=deposito(var_Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di deposito!'),nl),a(message(sport1,send_message(var_OperazioneScelta,var_Me))),nl.
+evi(scelta_operazione(var_Operazione)):-random(1,4,var_Operazione),(var_Operazione==1->var_OperazioneScelta=prelievo(var_Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di prelievo!'),nl;var_Operazione==2->var_OperazioneScelta=pagamento(var_Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di pagamento!'),nl;var_Operazione==3->var_OperazioneScelta=deposito(var_Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di deposito!'),nl),a(message(sport1,send_message(var_OperazioneScelta,var_Me))),retract(chiamato(vero)),assert(chiamato(falso)),nl.
 
-eve(fineOperazione):-write('Grazie, a presto'),retract(chiamato(vero)),assert(chiamato(falso)),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
+eve(fineOperazione):-write('Grazie, a presto'),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
 
 richiesta_ticket:-stato(sveglio).
 
