@@ -1,1 +1,3 @@
-send_message(send_message(richiede_ticket(_34961,cliente1),_34961))
+send_message(send_message(richiede_ticket(_34757,cliente1),_34757))
+send_message(send_message(pagamento(_34593,cliente1),_34593))
+send_message(send_message(pagare(client1,175),_3017))

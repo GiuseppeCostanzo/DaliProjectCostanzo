@@ -3,9 +3,9 @@
 
 biglietto(0).
 
-eve(richiede_ticket(var_A,var_N)):-write('Salve '),write(var_N),nl,aggiorna_progressivo(var_A,var_N).
+eve(richiede_ticket(var_A,var_N)):-write('SALVE '),write(var_N),nl,aggiorna_progressivo(var_A,var_N).
 
-aggiorna_progressivo(var_A,var_N):-retract(biglietto(var_OldVal)),var_NewVal is var_OldVal+1,assert(biglietto(var_NewVal)),write('Il suo ticket e il numero '),write(var_NewVal),nl,a(message(var_A,send_message(eroga_ticket(var_NewVal),var_Me))),a(message(sport1,send_message(aggiorna_clienti_attesa(var_A,var_NewVal),var_Me))).
+aggiorna_progressivo(var_A,var_N):-retract(biglietto(var_OldVal)),var_NewVal is var_OldVal+1,assert(biglietto(var_NewVal)),write('IL SUO TICKET E IL NUMERO '),write(var_NewVal),nl,a(message(var_A,send_message(eroga_ticket(var_NewVal),var_Me))),a(message(sport1,send_message(aggiorna_clienti_attesa(var_A,var_NewVal),var_Me))).
 
 :-dynamic receive/1.
 

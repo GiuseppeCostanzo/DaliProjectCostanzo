@@ -17,9 +17,9 @@ nome_agente(cliente1).
 progressivo(0).
 chiamato(falso).
 
-quantoDepositoE :> write('Dovrei depositare 400 euro '),nl,messageA(sport1,send_message(depositare(Me,400),Me)).
-quantoPrelievoE :> write('Dovrei prelevare 400 euro '),nl,messageA(sport1,send_message(prelevare(Me,300),Me)).
-quantoPagamentoE :> write('Dovrei pagare 175 euro '),nl,messageA(sport1,send_message(pagare(Me,175),Me)).
+quantoDepositoE :> write('DOVREI DEPOSITARE 10 EURO '),nl,messageA(sport1,send_message(depositare(client1,10),Me)).
+quantoPrelievoE :> write('DOVREI PRELEVARE 150 EURO '),nl,messageA(sport1,send_message(prelevare(client1,150),Me)).
+quantoPagamentoE :> write('DOVREI PAGARE 175 EURO '),nl,messageA(sport1,send_message(pagare(client1,175),Me)).
 
 
 /* Richiesta operazione allo sportellista - il cliente deve essere chiamato dallo sportellista */
@@ -29,15 +29,15 @@ scelta_operazione(Operazione) :- ticket_erogato(vero),chiamato(vero).
 
 scelta_operazioneI(Operazione) :>
     random(1, 4, Operazione), 
-    (Operazione == 1 -> OperazioneScelta = prelievo(Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di prelievo!'),nl ; 
-     Operazione == 2 -> OperazioneScelta = pagamento(Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di pagamento!'),nl ; 
-     Operazione == 3 -> OperazioneScelta = deposito(Me,cliente1),write('Salve, sono cliente1, dovrei effettuare una operazione di deposito!'),nl),
+    (Operazione == 1 -> OperazioneScelta = prelievo(Me,cliente1),write('SALVE, SONO CLIENTE1, DOVREI EFFETTUARE UNA OPERAZIONE DI PRELIEVO!'),nl ; 
+     Operazione == 2 -> OperazioneScelta = pagamento(Me,cliente1),write('SALVE, SONO CLIENTE1, DOVREI EFFETTUARE UNA OPERAZIONE DI PAGAMENTO!'),nl ; 
+     Operazione == 3 -> OperazioneScelta = deposito(Me,cliente1),write('SALVE, SONO CLIENTE1, DOVREI EFFETTUARE UNA OPERAZIONE DI DEPOSITO!'),nl),
 	 messageA(sport1,send_message(OperazioneScelta,Me)),retract(chiamato(vero)),assert(chiamato(falso)),nl.
 	
-fineOperazioneE :> write('Grazie, a presto'),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
+fineOperazioneE :> write('GRAZIE, A PRESTO'),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
 	
 /* Richiesta ticket al bigliettaio */
 richiesta_ticket :- stato(sveglio).
-richiesta_ticketI :> write('Salve, mi servirebbe il ticket per effettuare una operazione bancaria'),nl,messageA(ticket,send_message(richiede_ticket(Me,cliente1),Me)).
-eroga_ticketE(N) :> write('Grazie mille'),nl,retract(ticket_erogato(falso)),assert(ticket_erogato(vero)),retract(progressivo(OldVal)), NewVal is OldVal + N, assert(progressivo(NewVal)),
-					write('Ho il progressivo n. '),write(N),nl.
+richiesta_ticketI :> write('SALVE, MI SERVIREBBE IL TICKET PER EFFETTUARE UNA OPERAZIONE BANCARIA'),nl,messageA(ticket,send_message(richiede_ticket(Me,cliente1),Me)).
+eroga_ticketE(N) :> write('GRAZIE MILLE'),nl,retract(ticket_erogato(falso)),assert(ticket_erogato(vero)),retract(progressivo(OldVal)), NewVal is OldVal + N, assert(progressivo(NewVal)),
+					write('HO IL PROGRESSIVO N. '),write(N),nl.

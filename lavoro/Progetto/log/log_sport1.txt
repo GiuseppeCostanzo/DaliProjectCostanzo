@@ -1,0 +1,4 @@
+send_message(send_message(sportellista_chiamando,_33599))
+send_message(send_message(quantoPagamento,_3047))
+send_message(send_message(fineOperazione,_31463))
+send_message(send_message(sportellista_chiamando,_37013))
