@@ -7,7 +7,7 @@ set main_home=..\..
 set dali_home=..\..\src
 set conf_dir=conf
 set prolog=%sicstus_home%\spwin.exe
-set WAIT=ping -n 4 127.0.0.1
+set WAIT=ping -n 8 127.0.0.1
 
 ::del /q tmp\*.*
 del /q work\*.pl

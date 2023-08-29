@@ -4,8 +4,10 @@
 :- dynamic scrittoBenvenuto/1.
 :- dynamic occupato/1.
 
-saldo(client1,200).
+saldo(client1,100).
 saldo(client2,400).
+saldo(client3,25).
+
 coda(client0,99).
 inizio(falso).
 scrittoBenvenuto(falso).

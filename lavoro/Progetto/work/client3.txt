@@ -1,0 +1,43 @@
+:- dynamic ticket_erogato/1.
+:- dynamic progressivo/1.
+:- dynamic chiamato/1.
+
+/*
+Tipolgie di operazione: 
+1 -> Prelievo
+2 -> Pagamento
+3 -> Deposito
+*/
+
+
+/* Fatti */
+stato(sveglio).
+ticket_erogato(falso).
+nome_agente(cliente3).
+progressivo(0).
+chiamato(falso).
+
+quantoDepositoE :> write('DOVREI DEPOSITARE 70 EURO '),nl,messageA(sport1,send_message(depositare(client3,70),Me)).
+quantoPrelievoE :> write('DOVREI PRELEVARE 90 EURO '),nl,messageA(sport1,send_message(prelevare(client3,90),Me)).
+quantoPagamentoE :> write('DOVREI PAGARE 150 EURO '),nl,messageA(sport1,send_message(pagare(client3,150),Me)).
+
+
+/* Richiesta operazione allo sportellista - il cliente deve essere chiamato dallo sportellista */
+
+sportellista_chiamandoE :> retract(chiamato(falso)),assert(chiamato(vero)).
+scelta_operazione(Operazione) :- ticket_erogato(vero),chiamato(vero).
+
+scelta_operazioneI(Operazione) :>
+    random(1, 4, Operazione), 
+    (Operazione == 1 -> OperazioneScelta = prelievo(Me,cliente3),write('SALVE, SONO cliente3, DOVREI EFFETTUARE UNA OPERAZIONE DI PRELIEVO!'),nl ; 
+     Operazione == 2 -> OperazioneScelta = pagamento(Me,cliente3),write('SALVE, SONO cliente3, DOVREI EFFETTUARE UNA OPERAZIONE DI PAGAMENTO!'),nl ; 
+     Operazione == 3 -> OperazioneScelta = deposito(Me,cliente3),write('SALVE, SONO cliente3, DOVREI EFFETTUARE UNA OPERAZIONE DI DEPOSITO!'),nl),
+	 messageA(sport1,send_message(OperazioneScelta,Me)),retract(chiamato(vero)),assert(chiamato(falso)),nl.
+	
+fineOperazioneE :> write('GRAZIE, A PRESTO'),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
+	
+/* Richiesta ticket al bigliettaio */
+richiesta_ticket :- stato(sveglio).
+richiesta_ticketI :> write('SALVE, MI SERVIREBBE IL TICKET PER EFFETTUARE UNA OPERAZIONE BANCARIA'),nl,messageA(ticket,send_message(richiede_ticket(Me,cliente3),Me)).
+eroga_ticketE(N) :> write('GRAZIE MILLE'),nl,retract(ticket_erogato(falso)),assert(ticket_erogato(vero)),retract(progressivo(OldVal)), NewVal is OldVal + N, assert(progressivo(NewVal)),
+					write('HO IL PROGRESSIVO N. '),write(N),nl.
