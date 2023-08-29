@@ -136,7 +136,7 @@ external_event(prelievo,normal).
 mod(prelievo,check).
 remember_event_mod(sportellista_chiama,number(5),last).
 past_event(sportellista_chiama,60).
-internal_event(sportellista_chiama,3,forever,true,until_cond(past(sportellista_chiama))).
+internal_event(sportellista_chiama,6,forever,true,until_cond(past(sportellista_chiama))).
 remember_event_mod(message(next_client,send_message(sportellista_chiama,_935885)),number(5),last).
 past_event(message(next_client,send_message(sportellista_chiama,_935885)),60).
 action(message(next_client,send_message(sportellista_chiama,_935885)),normal).

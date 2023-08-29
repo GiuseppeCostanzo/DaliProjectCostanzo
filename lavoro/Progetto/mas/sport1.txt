@@ -4,7 +4,7 @@
 :- dynamic scrittoBenvenuto/1.
 :- dynamic occupato/1.
 
-saldo(client1,50).
+saldo(client1,200).
 saldo(client2,400).
 coda(client0,99).
 inizio(falso).
@@ -23,34 +23,32 @@ depositoE(C,F) :> write('SALVE QUANTO DEVE DEPOSITARE '),write(F),write('?'),mes
 
 /* C sarebbe id cliente, Q la quantità dell operazione */
 					
-prelevareE(C,Q) :> saldo(C,X),(Q > X -> write('MI SPIACE MA NON PUO PRELEVARE PIU DI QUANTO TIENE DEPOSITATO');
-					write('IL PRELIEVO E ANDATO A BUON FINE'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),
-					trova_minimo_nome(NomeMin),retract(coda(NomeMin,_)),togli_occupato,nl.					
-					
-pagareE(C,Q) :> saldo(C,X),(Q > X -> write('MI SPIACE MA NON PUO UTILIZZARE PIU DI QUANTO TIENE DEPOSITATO');
-				write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),
-				trova_minimo_nome(NomeMin),retract(coda(NomeMin,_)),togli_occupato,nl.
+prelevareE(C,Q) :> saldo(C,X),(Q > X -> write('MI SPIACE MA NON PUO PRELEVARE PIU DI QUANTO TIENE DEPOSITATO'),nl;
+					write('IL PRELIEVO E ANDATO A BUON FINE'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),libera_coda,nl.		
+
+								
+pagareE(C,Q) :> saldo(C,X),(Q > X -> write('MI SPIACE MA NON PUO UTILIZZARE PIU DI QUANTO TIENE DEPOSITATO'),nl;
+				write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(C,Q)),messageA(C,send_message(fineOperazione,Me)),libera_coda,nl.
 		
 aggiorna_saldo(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo - Q, assert(saldo(C, NewSaldo)),write('Il SALDO AGGIORNATO E '),write(NewSaldo),nl.
 
 
 depositareE(C,Q) :> write('BENE, LEI HA APPENA DEPOSITATO SUL SUO CONTO '),write(Q),write(' euro'),nl,aggiorna_deposito(C,Q),
-						messageA(C,send_message(fineOperazione,Me)),trova_minimo_nome(NomeMin),retract(coda(NomeMin,_)),togli_occupato,nl.
+						messageA(C,send_message(fineOperazione,Me)),libera_coda.
 						
 aggiorna_deposito(C,Q):> retract(saldo(C, OldSaldo)), NewSaldo is OldSaldo + Q, assert(saldo(C, NewSaldo)),write('IL NUOVO SALDO E '),write(NewSaldo),nl.
 
-
+libera_coda :> trova_minimo_nome(NomeMin,Id),retract(coda(NomeMin,Id)),togli_occupato,retract(coda(NomeMin,Id)).
 metti_occupato :> retract(occupato(falso)),assert(occupato(vero)).
 togli_occupato :> retract(occupato(vero)),assert(occupato(falso)).
 
 sportellista_chiama :- inizio(vero),occupato(falso).				
-sportellista_chiamaI :> write('IN CODA1'),trova_minimo_nome(NomeMin),write('In CODA2 '),write(NomeMin),(NomeMin = 'client0' -> write('AL MOMENTO NESSUNO IN CODA'),nl;continua).			
-continua :> trova_minimo_nome(NomeMin),write('Il prossimo e '),write(NomeMin),nl,messageA(NomeMin,send_message(sportellista_chiamando,Me)),metti_occupato.										
+sportellista_chiamaI :> trova_minimo_nome(NomeMin,Id),(NomeMin = 'client0' -> write('AL MOMENTO NESSUNO IN CODA'),nl;continua).			
+continua :> trova_minimo_nome(NomeMin,Id),write('IL PROSSIMO E '),write(NomeMin),nl,messageA(NomeMin,send_message(sportellista_chiamando,Me)),metti_occupato.										
 
-/* write('Il prossimo e '),write(NomeMin),messageA(NomeMin,send_message(sportellista_chiamando,Me)),retract(occupato(falso)),assert(occupato(vero)),nl */
 
 /*Trovare il nome dell'agente avente progressivo (cioè id) più piccolo - la procedura è corretta (testata)*/
-trova_minimo_nome(NomeMin) :- findall(Nome-Id, (coda(Nome, Id), Id > 0), ListaFatti),trova_minimo_id(ListaFatti, 9999, _, NomeMin).
+trova_minimo_nome(NomeMin,Id) :- findall(Nome-Id, (coda(Nome, Id), Id > 0), ListaFatti),trova_minimo_id(ListaFatti, 9999, _, NomeMin).
 trova_minimo_id([Nome-Id | Resto], IdAttuale, NomeAttuale, NomeMin) :-
     (Id < IdAttuale ->
         trova_minimo_id(Resto, Id, Nome, NomeMin);

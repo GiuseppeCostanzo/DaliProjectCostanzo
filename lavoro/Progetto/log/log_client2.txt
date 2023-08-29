@@ -1,0 +1,7 @@
+send_message(send_message(richiede_ticket(_32205,cliente2),_32205))
+send_message(send_message(prelievo(_31991,cliente2),_31991))
+send_message(send_message(prelevare(client2,80),_2609))
+send_message(send_message(richiede_ticket(_32179,cliente2),_32179))
+send_message(send_message(deposito(_32049,cliente2),_32049))
+send_message(send_message(depositare(client2,50),_2609))
+send_message(send_message(richiede_ticket(_34567,cliente2),_34567))

@@ -1,65 +1,39 @@
 
-:-dynamic saldo/2.
+:-dynamic ticket_erogato/1.
 
-:-dynamic coda/2.
+:-dynamic progressivo/1.
 
-:-dynamic inizio/1.
+:-dynamic chiamato/1.
 
-:-dynamic scrittoBenvenuto/1.
+stato(sveglio).
 
-:-dynamic occupato/1.
+ticket_erogato(falso).
 
-saldo(client1,200).
+nome_agente(cliente2).
 
-saldo(client2,400).
+progressivo(0).
 
-coda(client0,99).
+chiamato(falso).
 
-inizio(falso).
+eve(quantoDeposito):-write('DOVREI DEPOSITARE 50 EURO '),nl,a(message(sport1,send_message(depositare(client2,50),var_Me))).
 
-scrittoBenvenuto(falso).
+eve(quantoPrelievo):-write('DOVREI PRELEVARE 80 EURO '),nl,a(message(sport1,send_message(prelevare(client2,80),var_Me))).
 
-occupato(falso).
+eve(quantoPagamento):-write('DOVREI PAGARE 100 EURO '),nl,a(message(sport1,send_message(pagare(client2,100),var_Me))).
 
-messaggioInizio:-inizio(falso),scrittoBenvenuto(falso).
+eve(sportellista_chiamando):-retract(chiamato(falso)),assert(chiamato(vero)).
 
-evi(messaggioInizio):-write('SONO LO SPORTELLISTA, ATTENDO CHE QUALCUNO VENGA AD EFFETTUARE UNA OPERAZIONE'),nl,retract(scrittoBenvenuto(falso)),assert(scrittoBenvenuto(vero)).
+scelta_operazione(var_Operazione):-ticket_erogato(vero),chiamato(vero).
 
-eve(aggiorna_clienti_attesa(var_A,var_P)):-assert(coda(var_A,var_P)),retract(inizio(falso)),assert(inizio(vero)),assert(coda(var_A,var_P)),write('NUOVO CLIENTE IN CODA'),nl.
+evi(scelta_operazione(var_Operazione)):-random(1,4,var_Operazione),(var_Operazione==1->var_OperazioneScelta=prelievo(var_Me,cliente2),write('SALVE, SONO cliente2, DOVREI EFFETTUARE UNA OPERAZIONE DI PRELIEVO!'),nl;var_Operazione==2->var_OperazioneScelta=pagamento(var_Me,cliente2),write('SALVE, SONO cliente2, DOVREI EFFETTUARE UNA OPERAZIONE DI PAGAMENTO!'),nl;var_Operazione==3->var_OperazioneScelta=deposito(var_Me,cliente2),write('SALVE, SONO cliente2, DOVREI EFFETTUARE UNA OPERAZIONE DI DEPOSITO!'),nl),a(message(sport1,send_message(var_OperazioneScelta,var_Me))),retract(chiamato(vero)),assert(chiamato(falso)),nl.
 
-eve(prelievo(var_A,var_D)):-write('SALVE QUANTO DEVE PRELEVARE '),write(var_D),write('?'),a(message(var_A,send_message(quantoPrelievo,var_Me))),nl.
+eve(fineOperazione):-write('GRAZIE, A PRESTO'),retract(ticket_erogato(vero)),assert(ticket_erogato(falso)),nl.
 
-eve(pagamento(var_B,var_E)):-write('SALVE QUANTO DEVE PAGARE '),write(var_E),write('?'),a(message(var_B,send_message(quantoPagamento,var_Me))),nl.
+richiesta_ticket:-stato(sveglio).
 
-eve(deposito(var_C,var_F)):-write('SALVE QUANTO DEVE DEPOSITARE '),write(var_F),write('?'),a(message(var_C,send_message(quantoDeposito,var_Me))),nl.
+evi(richiesta_ticket):-write('SALVE, MI SERVIREBBE IL TICKET PER EFFETTUARE UNA OPERAZIONE BANCARIA'),nl,a(message(ticket,send_message(richiede_ticket(var_Me,cliente2),var_Me))).
 
-eve(prelevare(var_C,var_Q)):-saldo(var_C,var_X),(var_Q>var_X->write('MI SPIACE MA NON PUO PRELEVARE PIU DI QUANTO TIENE DEPOSITATO'),nl;write('IL PRELIEVO E ANDATO A BUON FINE'),nl,aggiorna_saldo(var_C,var_Q)),a(message(var_C,send_message(fineOperazione,var_Me))),libera_coda,nl.
-
-eve(pagare(var_C,var_Q)):-saldo(var_C,var_X),(var_Q>var_X->write('MI SPIACE MA NON PUO UTILIZZARE PIU DI QUANTO TIENE DEPOSITATO'),nl;write('Il pagamento e andato a buon fine'),nl,aggiorna_saldo(var_C,var_Q)),a(message(var_C,send_message(fineOperazione,var_Me))),libera_coda,nl.
-
-aggiorna_saldo(var_C,var_Q):-retract(saldo(var_C,var_OldSaldo)),var_NewSaldo is var_OldSaldo-var_Q,assert(saldo(var_C,var_NewSaldo)),write('Il SALDO AGGIORNATO E '),write(var_NewSaldo),nl.
-
-eve(depositare(var_C,var_Q)):-write('BENE, LEI HA APPENA DEPOSITATO SUL SUO CONTO '),write(var_Q),write(' euro'),nl,aggiorna_deposito(var_C,var_Q),a(message(var_C,send_message(fineOperazione,var_Me))),libera_coda.
-
-aggiorna_deposito(var_C,var_Q):-retract(saldo(var_C,var_OldSaldo)),var_NewSaldo is var_OldSaldo+var_Q,assert(saldo(var_C,var_NewSaldo)),write('IL NUOVO SALDO E '),write(var_NewSaldo),nl.
-
-libera_coda:-trova_minimo_nome(var_NomeMin,var_Id),retract(coda(var_NomeMin,var_Id)),togli_occupato,retract(coda(var_NomeMin,var_Id)).
-
-metti_occupato:-retract(occupato(falso)),assert(occupato(vero)).
-
-togli_occupato:-retract(occupato(vero)),assert(occupato(falso)).
-
-sportellista_chiama:-inizio(vero),occupato(falso).
-
-evi(sportellista_chiama):-trova_minimo_nome(var_NomeMin,var_Id),(var_NomeMin='client0'->write('AL MOMENTO NESSUNO IN CODA'),nl;continua).
-
-continua:-trova_minimo_nome(var_NomeMin,var_Id),write('IL PROSSIMO E '),write(var_NomeMin),nl,a(message(var_NomeMin,send_message(sportellista_chiamando,var_Me))),metti_occupato.
-
-trova_minimo_nome(var_NomeMin,var_Id):-findall(var_Nome-var_Id,(coda(var_Nome,var_Id),var_Id>0),var_ListaFatti),trova_minimo_id(var_ListaFatti,9999,var__,var_NomeMin).
-
-trova_minimo_id([var_Nome-var_Id|var_Resto],var_IdAttuale,var_NomeAttuale,var_NomeMin):-var_Id<var_IdAttuale->trova_minimo_id(var_Resto,var_Id,var_Nome,var_NomeMin);trova_minimo_id(var_Resto,var_IdAttuale,var_NomeAttuale,var_NomeMin).
-
-trova_minimo_id([],var__,var_NomeMin,var_NomeMin).
+eve(eroga_ticket(var_N)):-write('GRAZIE MILLE'),nl,retract(ticket_erogato(falso)),assert(ticket_erogato(vero)),retract(progressivo(var_OldVal)),var_NewVal is var_OldVal+var_N,assert(progressivo(var_NewVal)),write('HO IL PROGRESSIVO N. '),write(var_N),nl.
 
 :-dynamic receive/1.
 
@@ -151,11 +125,11 @@ call_inform(var_X,var_Ag,var_T):-asse_cosa(past_event(inform(var_X,var_Ag),var_T
 
 call_refuse(var_X,var_Ag,var_T):-clause(agent(var_A),var__),asse_cosa(past_event(var_X,var_T)),statistics(walltime,[var_Tp,var__]),retractall(past(var_X,var__,var_Ag)),assert(past(var_X,var_Tp,var_Ag)),a(message(var_Ag,reply(received(var_X),var_A))).
 
-call_cfp(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_402833,var_Ontology,_402837),_402827),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_cfp(var_A,var_C,var_Ag,_402871)),a(message(var_Ag,propose(var_A,[_402871],var_AgI))),retractall(ext_agent(var_Ag,_402909,var_Ontology,_402913)).
+call_cfp(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_364429,var_Ontology,_364433),_364423),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_cfp(var_A,var_C,var_Ag,_364467)),a(message(var_Ag,propose(var_A,[_364467],var_AgI))),retractall(ext_agent(var_Ag,_364505,var_Ontology,_364509)).
 
-call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_402707,var_Ontology,_402711),_402701),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,accept_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_402777,var_Ontology,_402781)).
+call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_364303,var_Ontology,_364307),_364297),asserisci_ontologia(var_Ag,var_Ontology,var_A),once(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,accept_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_364373,var_Ontology,_364377)).
 
-call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_402595,var_Ontology,_402599),_402589),not(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,reject_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_402651,var_Ontology,_402655)).
+call_propose(var_A,var_C,var_Ag):-clause(agent(var_AgI),var__),clause(ext_agent(var_Ag,_364191,var_Ontology,_364195),_364185),not(call_meta_execute_propose(var_A,var_C,var_Ag)),a(message(var_Ag,reject_proposal(var_A,[],var_AgI))),retractall(ext_agent(var_Ag,_364247,var_Ontology,_364251)).
 
 call_accept_proposal(var_A,var_Mp,var_Ag,var_T):-asse_cosa(past_event(accepted_proposal(var_A,var_Mp,var_Ag),var_T)),statistics(walltime,[var_Tp,var__]),retractall(past(accepted_proposal(var_A,var_Mp,var_Ag),var__,var_Ag)),assert(past(accepted_proposal(var_A,var_Mp,var_Ag),var_Tp,var_Ag)).
 
@@ -163,7 +137,7 @@ call_reject_proposal(var_A,var_Mp,var_Ag,var_T):-asse_cosa(past_event(rejected_p
 
 call_failure(var_A,var_M,var_Ag,var_T):-asse_cosa(past_event(failed_action(var_A,var_M,var_Ag),var_T)),statistics(walltime,[var_Tp,var__]),retractall(past(failed_action(var_A,var_M,var_Ag),var__,var_Ag)),assert(past(failed_action(var_A,var_M,var_Ag),var_Tp,var_Ag)).
 
-call_cancel(var_A,var_Ag):-if(clause(high_action(var_A,var_Te,var_Ag),_402159),retractall(high_action(var_A,var_Te,var_Ag)),true),if(clause(normal_action(var_A,var_Te,var_Ag),_402193),retractall(normal_action(var_A,var_Te,var_Ag)),true).
+call_cancel(var_A,var_Ag):-if(clause(high_action(var_A,var_Te,var_Ag),_363755),retractall(high_action(var_A,var_Te,var_Ag)),true),if(clause(normal_action(var_A,var_Te,var_Ag),_363789),retractall(normal_action(var_A,var_Te,var_Ag)),true).
 
 external_refused_action_propose(var_A,var_Ag):-clause(not_executable_action_propose(var_A,var_Ag),var__).
 
@@ -171,17 +145,17 @@ evi(external_refused_action_propose(var_A,var_Ag)):-clause(agent(var_Ai),var__),
 
 refused_message(var_AgM,var_Con):-clause(eliminated_message(var_AgM,var__,var__,var_Con,var__),var__).
 
-refused_message(var_To,var_M):-clause(eliminated_message(var_M,var_To,motivation(conditions_not_verified)),_401975).
+refused_message(var_To,var_M):-clause(eliminated_message(var_M,var_To,motivation(conditions_not_verified)),_363571).
 
 evi(refused_message(var_AgM,var_Con)):-clause(agent(var_Ai),var__),a(message(var_AgM,inform(var_Con,motivation(refused_message),var_Ai))),retractall(eliminated_message(var_AgM,var__,var__,var_Con,var__)),retractall(eliminated_message(var_Con,var_AgM,motivation(conditions_not_verified))).
 
-send_jasper_return_message(var_X,var_S,var_T,var_S0):-clause(agent(var_Ag),_401823),a(message(var_S,send_message(sent_rmi(var_X,var_T,var_S0),var_Ag))).
+send_jasper_return_message(var_X,var_S,var_T,var_S0):-clause(agent(var_Ag),_363419),a(message(var_S,send_message(sent_rmi(var_X,var_T,var_S0),var_Ag))).
 
-gest_learn(var_H):-clause(past(learn(var_H),var_T,var_U),_401771),learn_if(var_H,var_T,var_U).
+gest_learn(var_H):-clause(past(learn(var_H),var_T,var_U),_363367),learn_if(var_H,var_T,var_U).
 
-evi(gest_learn(var_H)):-retractall(past(learn(var_H),_401647,_401649)),clause(agente(_401669,_401671,_401673,var_S),_401665),name(var_S,var_N),append(var_L,[46,112,108],var_N),name(var_F,var_L),manage_lg(var_H,var_F),a(learned(var_H)).
+evi(gest_learn(var_H)):-retractall(past(learn(var_H),_363243,_363245)),clause(agente(_363265,_363267,_363269,var_S),_363261),name(var_S,var_N),append(var_L,[46,112,108],var_N),name(var_F,var_L),manage_lg(var_H,var_F),a(learned(var_H)).
 
-cllearn:-clause(agente(_401441,_401443,_401445,var_S),_401437),name(var_S,var_N),append(var_L,[46,112,108],var_N),append(var_L,[46,116,120,116],var_To),name(var_FI,var_To),open(var_FI,read,_401541,[]),repeat,read(_401541,var_T),arg(1,var_T,var_H),write(var_H),nl,var_T==end_of_file,!,close(_401541).
+cllearn:-clause(agente(_363037,_363039,_363041,var_S),_363033),name(var_S,var_N),append(var_L,[46,112,108],var_N),append(var_L,[46,116,120,116],var_To),name(var_FI,var_To),open(var_FI,read,_363137,[]),repeat,read(_363137,var_T),arg(1,var_T,var_H),write(var_H),nl,var_T==end_of_file,!,close(_363137).
 
 send_msg_learn(var_T,var_A,var_Ag):-a(message(var_Ag,confirm(learn(var_T),var_A))).
 
