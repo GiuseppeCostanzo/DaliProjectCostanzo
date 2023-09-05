@@ -38,6 +38,6 @@ fineOperazioneE :> write('GRAZIE, A PRESTO'),retract(ticket_erogato(vero)),asser
 	
 /* Richiesta ticket al bigliettaio */
 richiesta_ticket :- stato(sveglio).
-richiesta_ticketI :> write('SALVE, MI SERVIREBBE IL TICKET PER EFFETTUARE UNA OPERAZIONE BANCARIA'),nl,messageA(ticket,send_message(richiede_ticket(Me,cliente1),Me)).
+richiesta_ticketI :> write('SALVE, SONO CLIENTE1, MI SERVIREBBE IL TICKET PER EFFETTUARE UNA OPERAZIONE BANCARIA'),nl,messageA(ticket,send_message(richiede_ticket(Me,cliente1),Me)).
 eroga_ticketE(N) :> write('GRAZIE MILLE'),nl,retract(ticket_erogato(falso)),assert(ticket_erogato(vero)),retract(progressivo(OldVal)), NewVal is OldVal + N, assert(progressivo(NewVal)),
 					write('HO IL PROGRESSIVO N. '),write(N),nl.
