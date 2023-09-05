@@ -11,4 +11,13 @@ Nel mentre, l’agente ticket notifica l’agente sportellista che vi sono nuovi
 Il cliente, una volta scelta la tipologia di operazione, specifica l’importo, e nel caso di pagamento e prelievo, se sceglie un valore maggiore di ciò che ha nel proprio conto corrente l’operazione verrà negata.
 Nella specifica implementazione, vi sono un agente sportellista, un agente ticket, e 3 agenti clienti. Si noti che questo sistema di gestione della clientela può potenzialmente gestire n clienti
 
+# Sequence Diagram
+![SD](Cattura.PNG)
 
+In questo scenario SC1 viene descritto il sequence diagram degli agenti nel caso di una operazione di pagamento o prelievo che include dunque anche un sotto-scenario a seconda dell’esito dell’operazione.
+Nel caso dello scenario di deposito, l’operazione verrà direttamente conclusa 
+
+# Class Diagram
+![CD](https://github.com/GiuseppeCostanzo/DaliProjectCostanzo/blob/main/classD.PNG)
+
+Nel seguente class diagram sono riportate le entità principali del dominio. In una specifica classe sono riportati i fatti nella parte superiore, e gli eventi (i sta a indicare evento interno, e sta a indicare evento esterno) 
